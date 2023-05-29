@@ -1,5 +1,5 @@
 const express = require('express');
-const itemsGroupModel = require('../models/itemsGroupModel');
+const itemsGroupModel = require('../../models/Inventory/itemsGroupModel');
 const router = express.Router();
 
 // create items group

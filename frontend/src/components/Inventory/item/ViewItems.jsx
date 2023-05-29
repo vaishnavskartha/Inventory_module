@@ -1,11 +1,10 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { Link,useNavigate } from 'react-router-dom';
+import Navbar from '../../Navbar/Navbar';
 
 const ViewItems = () => {
 
     const [itemsData, setItemsData] = useState([]);
-    const navigate = useNavigate();
 
     const getItems = async () => {
         try {
@@ -18,11 +17,6 @@ const ViewItems = () => {
         }
     }
 
-    const home = (e) => {
-        e.preventDefault();
-        navigate('/', { replace: true })
-    }
-
     useEffect(() => {
         getItems()
     }, [])
@@ -31,29 +25,14 @@ const ViewItems = () => {
     return (
         <>
 
-            <nav class="navbar navbar-expand-lg bg-primary">
-                <div class="container-fluid">
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <Navbar />
 
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <Link onClick={home} to={'/'} aria-current="page">
-                                    <button className='btn btn-primary'>Home</button>
-                                </Link>
-                            </li>
+            <p className='text-center text-primary' style={{ fontSize: '21px' }}>View Items</p>
 
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-            <div className="table table-responsive">
-                <table className="table">
+            <div className="table-responsive mt-3">
+                <table className="table table-striped table-hover table-bordered border-primary">
                     <thead>
                         <tr>
-                            {/* <th scope="col">Group</th> */}
                             <th scope="col">Item Name</th>
                             <th scope="col">Unit</th>
                             <th scope="col">Dimensions</th>
@@ -73,20 +52,21 @@ const ViewItems = () => {
                         {itemsData.map((value, index) => {
                             return (
                                 <tr key={index}>
-                                    {/* <th>{value.item_group}</th> */}
-                                    <th>{value.item_name}</th>
-                                    <th>{value.unit}</th>
-                                    <th>{`${value.dimensions.length} L ${value.dimensions.width} W ${value.dimensions.height} H`}</th>
-                                    <th>{value.weight}</th>
-                                    <th>{value.manufacturer}</th>
-                                    <th>{value.brand}</th>
-                                    <th>{value.selling_price}</th>
-                                    <th>{value.cost_price}</th>
-                                    <th>{value.description}</th>
-                                    <th>{value.opening_stock}</th>
-                                    <th>{value.reorder_point}</th>
-                                    <th>{value.preferred_vendor}</th>
-                                    <th>{value.image_of_item}</th>
+                                    <td>{value.item_name}</td>
+                                    <td>{value.unit}</td>
+                                    <td>{`${value.dimensions.length} L ${value.dimensions.width} W ${value.dimensions.height} H`}</td>
+                                    <td>{value.weight}</td>
+                                    <td>{value.manufacturer}</td>
+                                    <td>{value.brand}</td>
+                                    <td>{value.selling_price}</td>
+                                    <td>{value.cost_price}</td>
+                                    <td>{value.description}</td>
+                                    <td>{value.opening_stock}</td>
+                                    <td>{value.reorder_point}</td>
+                                    <td>{value.preferred_vendor}</td>
+                                    <td>
+                                        {<img style={{height:'80px',width:'80px'}} src={value.image_of_item}></img>}
+                                    </td>
                                 </tr>
                             )
                         })}

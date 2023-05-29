@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link,useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Navbar from '../../Navbar/Navbar';
 
 const Item = () => {
 
@@ -22,28 +23,36 @@ const Item = () => {
     const [opening_stock, setopening_stock] = useState('');
     const [reorder_point, setReorderPoint] = useState('');
     const [preferred_vendor, setPreferredVendor] = useState('');
-    const [image_of_item, setImageOfItem] = useState('');
+    const [image_of_item, setImageOfItem] = useState([]);
     const navigate = useNavigate();
 
     const addItems = async (e) => {
         try {
             e.preventDefault();
-            const response = await axios.post('http://localhost:5000/items', {
-                item_group_id,
-                item_name,
-                unit,
-                dimensions,
-                weight,
-                manufacturer,
-                brand,
-                selling_price,
-                cost_price,
-                description,
-                opening_stock,
-                reorder_point,
-                preferred_vendor,
-                image_of_item
+            const formData = new FormData();
+            formData.append('photo', image_of_item);
+
+            formData.append('item_group_id', item_group_id);
+            formData.append('item_name', item_name);
+            formData.append('unit', unit);
+            formData.append('dimensions', JSON.stringify(dimensions));
+            formData.append('weight', weight);
+            formData.append('manufacturer', manufacturer);
+            formData.append('brand', brand);
+            formData.append('selling_price', selling_price);
+            formData.append('cost_price', cost_price);
+            formData.append('description', description);
+            formData.append('opening_stock', opening_stock);
+            formData.append('reorder_point', reorder_point);
+            formData.append('preferred_vendor', preferred_vendor);
+            formData.append('created_At', new Date());
+
+            const response = await axios.post('http://localhost:5000/items', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
             });
+
             if (response && response.data.success) {
                 alert('Item added successfull !!!');
                 navigate('/viewitems', { replace: true });
@@ -51,11 +60,6 @@ const Item = () => {
         } catch (error) {
             console.error(error.message);
         }
-    };
-
-    const home = (e) => {
-        e.preventDefault();
-        navigate('/', { replace: true })
     };
 
     useEffect(() => {
@@ -70,77 +74,81 @@ const Item = () => {
 
 
     return (
-        <>  
-            <nav class="navbar navbar-expand-lg bg-primary">
-                <div class="container-fluid">
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-                        
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <Link onClick={home} to={'/'} aria-current="page">
-                                    <button className='btn btn-primary'>Home</button>
-                                </Link>
-                            </li>
-                            
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-            <form onSubmit={addItems}>
+        <>
+            <Navbar />
+
+            <p className='text-center text-primary' style={{ fontSize: '21px' }}>Add Items</p>
+
+            <form className='row col-sm-12 col-md-6 mx-auto' encType='multipart/form-data'>
+                <label>Item Group</label>
                 <select className="form-select w-100" value={item_group_id} onChange={(e) => { setItemGroupId(e.target.value) }}>
-                    <option value="" disabled={true}>Item Group</option>
+                    <option value="" disabled={true}>--Select--</option>
                     {itemGroupData.map((item, index) => {
                         return (
                             <option key={index} value={item._id}>{item.item_group_label}</option>
                         )
                     })}
-                </select>
-
-                <label>item name</label>
+                </select> 
+                <p></p> 
+                <label>Item name</label>
                 <input type='text' onChange={(e) => { setItemName(e.target.value) }}></input>
+                <p></p>
 
-                <label>unit</label>
+                <label>Unit</label>
                 <input type='text' onChange={(e) => { setUnit(e.target.value) }}></input>
-
+                <p></p>
+                
                 <label>Dimensions</label>
-                <input type='text' onChange={(e) => { setDimensions({ length: e.target.value, width: dimensions.width, height: dimensions.height }) }}></input>
-                <input type='text' onChange={(e) => { setDimensions({ length: dimensions.length, width: e.target.value, height: dimensions.height }) }}></input>
-                <input type='text' onChange={(e) => { setDimensions({ length: dimensions.length, width: dimensions.width, height: e.target.value }) }}></input>
+                <input type='text' onChange={(e) => { setDimensions({ length: e.target.value, width: dimensions.width, height: dimensions.height }) }} placeholder='Length'></input>
+                <input type='text' onChange={(e) => { setDimensions({ length: dimensions.length, width: e.target.value, height: dimensions.height }) }} placeholder='Width'></input>
+                <input type='text' onChange={(e) => { setDimensions({ length: dimensions.length, width: dimensions.width, height: e.target.value }) }} placeholder='Height'></input>
+                <p></p>
 
-                <label>weight</label>
+                <label>Weight</label>
                 <input type='number' onChange={(e) => { setWeight(e.target.value) }}></input>
+                <p></p>
 
-                <label>manufacturer</label>
+                <label>Manufacturer</label>
                 <input type='text' onChange={(e) => { setManufacturer(e.target.value) }}></input>
+                <p></p>
 
-                <label>brand</label>
+                <label>Brand</label>
                 <input type='text' onChange={(e) => { setBrand(e.target.value) }}></input>
+                <p></p>
 
-                <label>selling price</label>
+                <label>Selling price</label>
                 <input type='number' onChange={(e) => { setSellingPrice(e.target.value) }}></input>
+                <p></p>
 
-                <label>cost price</label>
+                <label>Cost price</label>
                 <input type='number' onChange={(e) => { setCostPrice(e.target.value) }}></input>
+                <p></p>
 
-                <label>description</label>
+                <label>Description</label>
                 <input type='text' onChange={(e) => { setDescription(e.target.value) }}></input>
+                <p></p>
 
-                <label>opening stock</label>
+                <label>Opening stock</label>
                 <input type='number' onChange={(e) => { setopening_stock(e.target.value) }}></input>
+                <p></p>
 
-                <label>reorder_point</label>
+                <label>Reorder_point</label>
                 <input type='number' onChange={(e) => { setReorderPoint(e.target.value) }}></input>
+                <p></p>
 
-                <label>preferred vendor</label>
+                <label>Preferred vendor</label>
                 <input type='text' onChange={(e) => { setPreferredVendor(e.target.value) }}></input>
+                <p></p>
 
-                <label>image of item</label>
-                <input type="file" onChange={(e) => { setImageOfItem(e.target.value) }} />
-                <button type='submit'>Submit</button>
+                <label>Image of item</label>
+                <input type="file" name='photo' onChange={(e) => { setImageOfItem(e.target.files[0]) }} />
+                <p></p>
+
+                <button className="btn btn-primary" onClick={(e) => { addItems(e) }}>Submit</button>
+                <p></p>
+                
             </form>
+            <br /><br />
         </>
     )
 }

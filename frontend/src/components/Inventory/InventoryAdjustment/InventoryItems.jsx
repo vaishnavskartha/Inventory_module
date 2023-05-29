@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Navbar from '../../Navbar/Navbar';
 
 const InventoryItems = () => {
 
@@ -17,10 +18,10 @@ const InventoryItems = () => {
         navigate('/adjust-form', { replace: true });
     }
 
-    const home = (e) => {
-        e.preventDefault();
-        navigate('/', { replace: true })
-    }
+    // const home = (e) => {
+    //     e.preventDefault();
+    //     navigate('/', { replace: true })
+    // }
 
     const inventoryAdjustment = (e) => {
         e.preventDefault();
@@ -46,34 +47,15 @@ const InventoryItems = () => {
 
     return (
         <>
-            <nav class="navbar navbar-expand-lg bg-primary">
-                <div class="container-fluid">
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <Navbar />
+            {/* <button onClick={(e) => { home(e) }}>Home</button> */}
 
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <Link onClick={home} to={'/'} aria-current="page">
-                                    <button className='btn btn-primary'>Home</button>
-                                </Link>
-                            </li>
-                            <li class="nav-item">
-                                <Link onClick={inventoryAdjustment} to={'/inventoryadjustments'} aria-current="page">
-                                    <button className='btn btn-primary'>Back</button>
-                                </Link>
-                            </li>
-
-
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-            {/* <button onClick={(e) => { home(e) }}>Home</button>
-            <button onClick={(e) => { inventoryAdjustment(e) }}>Back</button> */}
+            <button className="btn btn-primary mt-4 ms-2" onClick={(e) => { inventoryAdjustment(e) }}>Back</button>
+            <br />
+            <p className='text-center text-primary' style={{ fontSize: '21px' }}>Inventory Items</p>
+            <br />
             <div className="table table-responsive">
-                <table className="table">
+                <table className="table table-striped table-hover table-bordered border-primary">
                     <thead>
                         <tr>
                             <th scope="col">Item Name</th>
@@ -108,9 +90,9 @@ const InventoryItems = () => {
                                     <th>{value.opening_stock}</th>
                                     <th>{value.reorder_point}</th>
                                     <th>{value.preferred_vendor}</th>
-                                    <th>{value.image_of_item}</th>
+                                    <th>{<img style={{height:'80px',width:'80px'}} src={value.image_of_item}></img>}</th>
                                     <th>
-                                        <button onClick={(e) => { adjust(e, value) }}>Adjust</button>
+                                        <button className="btn btn-success" onClick={(e) => { adjust(e, value) }}>Adjust</button>
                                     </th>
                                 </tr>
                             )

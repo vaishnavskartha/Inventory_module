@@ -1,13 +1,18 @@
 const express = require('express');
-const itemsModel = require('../models/itemsModel');
-const inventoryAdjModel = require('../models/inventoryAdjustmentsModel');
+const itemsModel = require('../../models/Inventory/itemsModel');
+const inventoryAdjModel = require('../../models/Inventory/inventoryAdjustmentsModel');
 const moment = require('moment');
 const router = express.Router();
 
 // update items
 router.put('/adjust-items/:id', async (req, res) => {
     const adjustments = new inventoryAdjModel(req.body);
-    const items = await itemsModel.findByIdAndUpdate({ _id: req.params.id }, req.body);
+    if (req.body.quantity) {
+        await itemsModel.findByIdAndUpdate(req.params.id, { $set: { opening_stock: req.body.quantity } });
+    }
+    else if (req.body.value) {
+        await itemsModel.findByIdAndUpdate(req.params.id, { $set: { selling_price: req.body.value } });
+    }
     const data = await adjustments.save();
     res.send({ success: data });
 });

@@ -2,7 +2,8 @@ import axios from 'axios'
 import moment from 'moment/moment';
 import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Navbar from '../../Navbar/Navbar';
 
 const Reports = () => {
 
@@ -29,6 +30,8 @@ const Reports = () => {
 
     const reset = async (e) => {
         e.preventDefault();
+        setStartDate(new Date());
+        setEndDate(new Date());
         await getReports();
     }
 
@@ -57,25 +60,10 @@ const Reports = () => {
 
     return (
         <>
-            <nav class="navbar navbar-expand-lg bg-primary">
-                <div class="container-fluid">
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <Link onClick={home} to={'/'} aria-current="page">
-                                    <button className='btn btn-primary'>Home</button>
-                                </Link>
-                            </li>
-
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-            {/* <button onClick={(e) => { home(e) }}>Home</button> */}
+            <Navbar />
+            <br />
+            <p className='text-center text-primary' style={{ fontSize: '21px' }}>Reports</p>
+            <br />
             <div className="col-sm-12 col-lg-2 d-flex align-items-center mb-3">
                 <div className="form-group mr-3 ms-3">
                     <label htmlFor="startDate" className="mr-2"> <h5>Start Date:</h5> </label>
@@ -130,6 +118,7 @@ const Reports = () => {
                     </tbody>
                 </table>
             </div>
+            <br /><br />
         </>
     )
 }

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import {Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Navbar from '../../Navbar/Navbar';
 
 const InventoryAdjustments = () => {
 
@@ -29,11 +30,6 @@ const InventoryAdjustments = () => {
         navigate('/adjustment-reports');
     }
 
-    const home = (e) => {
-        e.preventDefault();
-        navigate('/', { replace: true })
-    }
-
     useEffect(() => {
         getItemsGroup();
     }, []);
@@ -41,34 +37,14 @@ const InventoryAdjustments = () => {
 
     return (
         <>
-            <nav class="navbar navbar-expand-lg bg-primary">
-            <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <Navbar />
 
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <Link onClick={home} to={'/'} aria-current="page">
-                                <button className='btn btn-primary'>Home</button>
-                            </Link>
-                        </li>
-                        <li class="nav-item">
-                            <Link onClick={getReports} to={'/adjustment-reports'} aria-current="page">
-                                <button className='btn btn-primary'>Reports</button>
-                            </Link>
-                        </li>
+            <p className='text-center text-primary' style={{ fontSize: '21px' }}>Inventory Adjustments</p>
 
-
-                    </ul>
-                </div>
-            </div>
-        </nav>
-            {/* <button onClick={(e) => { home(e) }}>Home</button>
-            <button onClick={(e) => { getReports(e) }}>Reports</button> */}
+            <button className="btn btn-primary mt-3 ms-2" onClick={(e) => { getReports(e) }}>Reports</button>
+            <br /><br />
             <div className="table table-responsive">
-                <table className="table">
+                <table className="table ">
                     <thead>
                         <tr>
                             <th scope="col">Group Name</th>
@@ -81,7 +57,7 @@ const InventoryAdjustments = () => {
                                 <tr key={index}>
                                     <th>{value.item_group_label}</th>
                                     <th>
-                                        <button onClick={(e) => { manage(e, value) }}>Manage</button>
+                                        <button className="btn btn-success" onClick={(e) => { manage(e, value) }}>Manage</button>
                                     </th>
                                 </tr>
                             )
