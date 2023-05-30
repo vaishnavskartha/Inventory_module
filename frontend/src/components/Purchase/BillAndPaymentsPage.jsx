@@ -11,18 +11,18 @@ const BillAndPaymentsPage = () => {
 
     const vendorCredit = async (e, value) => {
         e.preventDefault();
-        const response = await axios.put('http://localhost:5000/vendorCredits', {
-            purchaseId: await value.purchaseId,
-            item_group: await value.item_group,
-            item: await value.item,
-            order_quantity: await value.order_quantity,
+            const response = await axios.put('http://localhost:5000/vendorcredits', {
+            purchaseId: value.purchaseId,
+            item_group: value.item_group,
+            item:  value.item,
+            order_quantity:  value.order_quantity,
             order_date: String(moment(value.date).format('DD-MM-YYYY')),
-            vendors_name: await value.vendors_name,
-            vendors_email: await value.vendors_email,
-            vendors_phone_number: await value.vendors_phone_number,
-            payment_terms: await value.payment_terms,
-            amount: await value.amount,
-            status: "CR.Issued",
+            vendors_name:  value.vendors_name,
+            vendors_email:  value.vendors_email,
+            vendors_phone_number:  value.vendors_phone_number,
+            payment_terms:  value.payment_terms,
+            amount: value.amount,
+            status:"CR.Issued",
             credit_number,
             credit_date: new Date()
         });
@@ -76,7 +76,7 @@ const BillAndPaymentsPage = () => {
                                     <td>{value.item_group}</td>
                                     <td>{value.item}</td>
                                     <td>{value.order_quantity}</td>
-                                    <td>{value.date}</td>
+                                    <td>{moment(value.date).format('DD-MM-YYYY')}</td>
                                     <td>{value.vendors_name}</td>
                                     <td>{value.vendors_email}</td>
                                     <td>{value.vendors_phone_number}</td>
